@@ -7,6 +7,7 @@
 - Java 17+ (for keytool)
 - Python 3.10+
 - Git
+- LM Studio (local LLM API server)
 
 ### Step-by-step deployment (from Git)
 1) Clone the repo:
