@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kafka MCP Ops Console</title>
+  <style>
+    :root {
+      --bg:#000000; --panel:#111111; --panel-2:#0b0b0b;
+      --text:#e8eef9; --muted:#9aa4b2; --accent:#4dd4ff;
+      --ok:#35d07f; --warn:#f2c94c; --err:#ff6b6b;
+      --card:#141b2a; --border:#1e2a3f;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system; background:var(--bg); color:var(--text); }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 22px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; }
+    h1 { margin: 0; font-size: 22px; letter-spacing:.02em; }
+    .logo { height: 28px; width: auto; display:block; }
+    .cluster { display:flex; align-items:center; gap:8px; }
+    select { background:var(--panel); color:var(--text); border:1px solid var(--border); padding:8px 10px; border-radius:8px; }
+
+    .grid { display:grid; grid-template-columns: 2fr 1fr; gap:16px; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; }
+
+    .chat { min-height: 420px; max-height: 520px; overflow:auto; background:var(--panel); border-radius: 10px; padding:12px; }
+    .msg { margin: 10px 0; }
+    .role { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+    .bubble { margin-top: 4px; padding: 10px 12px; border-radius: 10px; background: #1b2436; white-space: pre-wrap; }
+    .user .bubble { background: #20314b; }
+
+    .input { display:flex; gap:8px; margin-top:10px; }
+    input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid var(--border); background:#0f1623; color:var(--text); }
+    button { padding:10px 14px; border-radius:8px; border:0; background:var(--accent); color:#04151f; font-weight:600; }
+
+    .toolpanel h3 { margin:0 0 8px; font-size:14px; color:var(--muted); text-transform: uppercase; letter-spacing:.08em; }
+    .toolcall { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; background: #0f1623; padding:10px; border-radius:8px; border:1px solid var(--border); }
+    .badge { display:inline-block; padding:2px 6px; border-radius:6px; font-size:11px; margin-right:6px; }
+    .ok { background: #153a2a; color: var(--ok); }
+    .warn { background: #3a3215; color: var(--warn); }
+    .err { background: #3a1515; color: var(--err); }
+
+    .toolslist { display:grid; grid-template-columns:1fr; gap:8px; max-height: 260px; overflow:auto; }
+    .toolcard { background:var(--panel-2); border:1px solid var(--border); border-radius:10px; padding:8px; }
+    .toolcard .name { font-weight:600; font-size:12px; }
+    .toolcard .desc { color:var(--muted); font-size:11px; }
+
+    .footer { color: var(--muted); font-size: 11px; margin-top: 10px; }
+    .search { margin: 6px 0 10px; }
+    .actions { display:flex; gap:8px; margin-top:10px; flex-wrap: wrap; }
+    .actions button { background:#2d3b56; color:#cfe7ff; }
+    .approve { background:#35d07f !important; color:#04151f !important; }
+    .summary { margin-top: 10px; font-size: 12px; color: var(--muted); }
+    .timeline { margin-top: 12px; max-height: 140px; overflow:auto; font-size: 11px; color: var(--muted); }
+    .timeline .item { padding: 6px 0; border-bottom: 1px dashed var(--border); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img class="logo" src="/logo" alt="Vodafone" />
+        <h1>Kafka MCP Ops Console</h1>
+      </div>
+      <div class="cluster">
+        <span class="badge ok">Cluster</span>
+        <select id="cluster"></select>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div id="chat" class="chat"></div>
+        <div class="input">
+          <input id="prompt" placeholder="Ask: list topics, check ISR, tail logs..." />
+          <button id="send">Send</button>
+        </div>
+        <div class="actions">
+          <button id="health">Health snapshot</button>
+          <button id="explain">Explain last error (LLM)</button>
+          <button id="search">Search web for last error</button>
+          <button id="approve" class="approve" style="display:none;">Approve write</button>
+        </div>
+        <div class="summary" id="summary"></div>
+        <div class="timeline" id="timeline"></div>
+        <div class="footer">Type /help for examples. Writes require approval.</div>
+      </div>
+
+      <div class="card toolpanel">
+        <h3>Last Tool Call</h3>
+        <div id="toolcall" class="toolcall">No tool invoked yet.</div>
+        <h3 style="margin-top:14px;">Available Tools</h3>
+        <input id="toolsearch" class="search" placeholder="Search tools..." />
+        <div id="tools" class="toolslist"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const promptEl = document.getElementById('prompt');
+    const sendBtn = document.getElementById('send');
+    const toolcall = document.getElementById('toolcall');
+    const toolsList = document.getElementById('tools');
+    const clusterSel = document.getElementById('cluster');
+    const toolsearch = document.getElementById('toolsearch');
+    const healthBtn = document.getElementById('health');
+    const explainBtn = document.getElementById('explain');
+    const searchBtn = document.getElementById('search');
+    const approveBtn = document.getElementById('approve');
+    const summaryEl = document.getElementById('summary');
+    const timelineEl = document.getElementById('timeline');
+    let toolsCache = [];
+    let lastErrorText = '';
+    let pendingWrite = null;
+    let timeline = [];
+
+    function addMsg(role, text) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + role;
+      const r = document.createElement('div');
+      r.className = 'role';
+      r.textContent = role;
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      b.textContent = text;
+      div.appendChild(r); div.appendChild(b);
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function setToolCall(info) {
+      if (!info) { toolcall.textContent = 'No tool invoked yet.'; return; }
+      toolcall.textContent = JSON.stringify(info, null, 2);
+    }
+
+    function addTimeline(entry) {
+      timeline.unshift(entry);
+      timeline = timeline.slice(0, 5);
+      timelineEl.innerHTML = timeline.map(t => `<div class="item">${t}</div>`).join('');
+    }
+
+    function renderTools(filter) {
+      const q = (filter || '').toLowerCase();
+      toolsList.innerHTML = '';
+      toolsCache
+        .filter(t => !q || t.name.toLowerCase().includes(q) || (t.description||'').toLowerCase().includes(q))
+        .forEach(t => {
+          const d = document.createElement('div');
+          d.className = 'toolcard';
+          const label = t.display || t.name;
+          d.innerHTML = `<div class="name">${label}</div><div class="desc">${t.description}</div>`;
+          toolsList.appendChild(d);
+        });
+    }
+
+    async function loadTools() {
+      const res = await fetch('/tools');
+      const data = await res.json();
+      toolsCache = data.tools || [];
+      renderTools('');
+    }
+
+    async function loadClusters() {
+      const res = await fetch('/clusters');
+      const data = await res.json();
+      clusterSel.innerHTML = '';
+      (data.clusters || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id; opt.textContent = c.name;
+        clusterSel.appendChild(opt);
+      });
+    }
+
+    function isWriteTool(toolName) {
+      return toolName && (toolName.includes('create') || toolName.includes('delete') || toolName.includes('alter') || toolName.includes('reassign') || toolName.includes('reset') || toolName.includes('rotate') || toolName.includes('election'));
+    }
+
+    async function send() {
+      const text = promptEl.value.trim();
+      if (!text) return;
+      addMsg('user', text);
+      promptEl.value = '';
+
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: text, cluster: clusterSel.value })
+      });
+      const data = await res.json();
+      if (data.error_text) lastErrorText = data.error_text;
+      setToolCall(data.tool_call || null);
+
+      if (data.pending_write) {
+        pendingWrite = data.pending_write;
+        approveBtn.style.display = 'inline-block';
+        summaryEl.textContent = 'Write pending approval.';
+        return;
+      }
+
+      approveBtn.style.display = 'none';
+      summaryEl.textContent = data.summary || '';
+      if (data.tool_call) {
+        const status = data.error_text ? 'error' : 'ok';
+        addTimeline(`${status.toUpperCase()} tool ${data.tool_call.tool} args=${JSON.stringify(data.tool_call.args)}`);
+      } else {
+        addTimeline(`chat: ${text}`);
+      }
+      addMsg('assistant', data.reply || JSON.stringify(data));
+    }
+
+    async function approve() {
+      if (!pendingWrite) return;
+      const res = await fetch('/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pendingWrite)
+      });
+      const data = await res.json();
+      if (data.error_text) lastErrorText = data.error_text;
+      approveBtn.style.display = 'none';
+      pendingWrite = null;
+      setToolCall(data.tool_call || null);
+      if (data.tool_call) {
+        addTimeline(`APPROVED ${data.tool_call.tool} args=${JSON.stringify(data.tool_call.args)}`);
+      }
+      addMsg('assistant', data.reply || JSON.stringify(data));
+    }
+
+    async function explain() {
+      if (!lastErrorText) {
+        addMsg('assistant', 'No recent error to explain.');
+        return;
+      }
+      const res = await fetch('/explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: lastErrorText })
+      });
+      const data = await res.json();
+      addMsg('assistant', data.reply || JSON.stringify(data));
+    }
+
+    async function health() {
+      const res = await fetch('/health', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cluster: clusterSel.value })
+      });
+      const data = await res.json();
+      summaryEl.textContent = data.summary || '';
+      addTimeline('health snapshot');
+      addMsg('assistant', data.reply || JSON.stringify(data));
+    }
+
+    function searchWeb() {
+      if (!lastErrorText) {
+        addMsg('assistant', 'No recent error to search.');
+        return;
+      }
+      const q = encodeURIComponent(lastErrorText);
+      window.open(`https://www.google.com/search?q=${q}`, '_blank');
+    }
+
+    sendBtn.onclick = send;
+    healthBtn.onclick = health;
+    explainBtn.onclick = explain;
+    searchBtn.onclick = searchWeb;
+    approveBtn.onclick = approve;
+    promptEl.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+    toolsearch.addEventListener('input', e => renderTools(e.target.value));
+
+    loadTools();
+    loadClusters();
+  </script>
+</body>
+</html>

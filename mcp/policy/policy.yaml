@@ -1,0 +1,37 @@
+# MCP Policy (POC)
+maintenance_lock: false
+
+roles:
+  approver: kafka-admin
+  observer: ops-readonly
+
+thresholds:
+  max_urps: 0
+  controller_stability_seconds: 300
+
+read_tools:
+  - kafka_broker_health
+  - kafka_topic_describe
+  - kafka_consumer_group_describe
+  - kafka_logs_tail
+  - kafka_config_read
+  - kafka_metrics_snapshot
+  - kafka_tls_status
+
+write_tools:
+  - kafka_topic_create
+  - kafka_topic_delete
+  - kafka_topic_alter_partitions
+  - kafka_topic_alter_config
+  - kafka_reassign_partitions
+  - kafka_preferred_leader_election
+  - kafka_consumer_group_reset_offsets
+  - kafka_tls_rotate
+
+maintenance_exceptions:
+  allow:
+    - kafka_reassign_partitions
+    - kafka_tls_rotate
+  deny:
+    - kafka_topic_delete
+    - kafka_consumer_group_reset_offsets

@@ -1,0 +1,67 @@
+{"status":"ok","output":"Topic: test-rf2	TopicId: 1WogjpLCQj-DkJ5XP8XJEw	PartitionCount: 3	ReplicationFactor: 2	Configs: 
+	Topic: test-rf2	Partition: 0	Leader: 2	Replicas: 1,2	Isr: 2,1
+	Topic: test-rf2	Partition: 1	Leader: 3	Replicas: 2,3	Isr: 3,2
+	Topic: test-rf2	Partition: 2	Leader: 3	Replicas: 3,1	Isr: 3,1
+Topic: test-rf1	TopicId: 6zVZ2PBaQhWJL_yrYyOfNA	PartitionCount: 3	ReplicationFactor: 1	Configs: 
+	Topic: test-rf1	Partition: 0	Leader: 2	Replicas: 2	Isr: 2
+	Topic: test-rf1	Partition: 1	Leader: 3	Replicas: 3	Isr: 3
+	Topic: test-rf1	Partition: 2	Leader: 1	Replicas: 1	Isr: 1
+Topic: poc-test	TopicId: KO4PyV6BQ8uYOhc2PZ1hKg	PartitionCount: 3	ReplicationFactor: 3	Configs: 
+	Topic: poc-test	Partition: 0	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1
+	Topic: poc-test	Partition: 1	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+	Topic: poc-test	Partition: 2	Leader: 3	Replicas: 1,2,3	Isr: 3,1,2
+Topic: __consumer_offsets	TopicId: 53AjKmXPSS68hXKaumoEYA	PartitionCount: 50	ReplicationFactor: 3	Configs: compression.type=producer,cleanup.policy=compact,segment.bytes=104857600
+	Topic: __consumer_offsets	Partition: 0	Leader: 3	Replicas: 2,3,1	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 1	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 2	Leader: 3	Replicas: 1,2,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 3	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 4	Leader: 3	Replicas: 2,1,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 5	Leader: 3	Replicas: 1,3,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 6	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 7	Leader: 3	Replicas: 2,1,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 8	Leader: 3	Replicas: 1,3,2	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 9	Leader: 3	Replicas: 1,2,3	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 10	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 11	Leader: 3	Replicas: 3,1,2	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 12	Leader: 3	Replicas: 1,3,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 13	Leader: 3	Replicas: 3,2,1	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 14	Leader: 3	Replicas: 2,1,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 15	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 16	Leader: 3	Replicas: 2,1,3	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 17	Leader: 3	Replicas: 1,3,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 18	Leader: 3	Replicas: 1,2,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 19	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 20	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 21	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 22	Leader: 3	Replicas: 1,2,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 23	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 24	Leader: 3	Replicas: 1,2,3	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 25	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 26	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 27	Leader: 3	Replicas: 2,1,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 28	Leader: 3	Replicas: 1,3,2	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 29	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 30	Leader: 3	Replicas: 2,3,1	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 31	Leader: 3	Replicas: 3,1,2	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 32	Leader: 3	Replicas: 1,2,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 33	Leader: 3	Replicas: 1,2,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 34	Leader: 3	Replicas: 2,3,1	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 35	Leader: 3	Replicas: 3,1,2	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 36	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 37	Leader: 3	Replicas: 2,1,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 38	Leader: 3	Replicas: 1,3,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 39	Leader: 3	Replicas: 2,1,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 40	Leader: 3	Replicas: 1,3,2	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 41	Leader: 3	Replicas: 3,2,1	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 42	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 43	Leader: 3	Replicas: 1,2,3	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 44	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 45	Leader: 3	Replicas: 2,1,3	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 46	Leader: 3	Replicas: 1,3,2	Isr: 3,1,2
+	Topic: __consumer_offsets	Partition: 47	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 48	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1
+	Topic: __consumer_offsets	Partition: 49	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+Topic: test-rf3	TopicId: iqF-xAAST7KrS37YjSeQCQ	PartitionCount: 3	ReplicationFactor: 3	Configs: 
+	Topic: test-rf3	Partition: 0	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2
+	Topic: test-rf3	Partition: 1	Leader: 3	Replicas: 1,2,3	Isr: 3,2,1
+	Topic: test-rf3	Partition: 2	Leader: 3	Replicas: 2,3,1	Isr: 3,2,1"}

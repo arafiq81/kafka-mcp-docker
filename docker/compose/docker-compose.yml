@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  kafka1:
+    image: ${KAFKA_IMAGE}
+    container_name: kafka1
+    hostname: kafka1
+    ports:
+      - "9093:9093"
+      - "9101:9101"
+    volumes:
+      - ../kafka/broker1.properties:/opt/kafka/config/server.properties:ro
+      - ../kafka/client.properties:/opt/kafka/config/client.properties:ro
+      - ../certs/kafka1:/opt/kafka/config/certs:ro
+      - ../../logs/broker1:/var/log/kafka
+      - ../../data/broker1:/var/lib/kafka/data
+      - ../../metadata/broker1:/var/lib/kafka/metadata
+    environment:
+      - KAFKA_HEAP_OPTS=-Xms512m -Xmx512m
+      - KAFKA_JMX_PORT=9101
+      - KAFKA_LOG4J_LOGGERS=kafka.controller=INFO,kafka.server=INFO
+    command: ["/opt/kafka/bin/kafka-server-start.sh", "/opt/kafka/config/server.properties"]
+
+  kafka2:
+    image: ${KAFKA_IMAGE}
+    container_name: kafka2
+    hostname: kafka2
+    ports:
+      - "9094:9093"
+      - "9102:9101"
+    volumes:
+      - ../kafka/broker2.properties:/opt/kafka/config/server.properties:ro
+      - ../kafka/client.properties:/opt/kafka/config/client.properties:ro
+      - ../certs/kafka2:/opt/kafka/config/certs:ro
+      - ../../logs/broker2:/var/log/kafka
+      - ../../data/broker2:/var/lib/kafka/data
+      - ../../metadata/broker2:/var/lib/kafka/metadata
+    environment:
+      - KAFKA_HEAP_OPTS=-Xms512m -Xmx512m
+      - KAFKA_JMX_PORT=9101
+      - KAFKA_LOG4J_LOGGERS=kafka.controller=INFO,kafka.server=INFO
+    command: ["/opt/kafka/bin/kafka-server-start.sh", "/opt/kafka/config/server.properties"]
+
+  kafka3:
+    image: ${KAFKA_IMAGE}
+    container_name: kafka3
+    hostname: kafka3
+    ports:
+      - "9095:9093"
+      - "9103:9101"
+    volumes:
+      - ../kafka/broker3.properties:/opt/kafka/config/server.properties:ro
+      - ../kafka/client.properties:/opt/kafka/config/client.properties:ro
+      - ../certs/kafka3:/opt/kafka/config/certs:ro
+      - ../../logs/broker3:/var/log/kafka
+      - ../../data/broker3:/var/lib/kafka/data
+      - ../../metadata/broker3:/var/lib/kafka/metadata
+    environment:
+      - KAFKA_HEAP_OPTS=-Xms512m -Xmx512m
+      - KAFKA_JMX_PORT=9101
+      - KAFKA_LOG4J_LOGGERS=kafka.controller=INFO,kafka.server=INFO
+    command: ["/opt/kafka/bin/kafka-server-start.sh", "/opt/kafka/config/server.properties"]

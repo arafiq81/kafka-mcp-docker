@@ -1,0 +1,7 @@
+{
+  "clusters": [
+    {"id": "dev-cluster", "name": "dev-cluster"},
+    {"id": "prod-east", "name": "prod-east"},
+    {"id": "prod-west", "name": "prod-west"}
+  ]
+}

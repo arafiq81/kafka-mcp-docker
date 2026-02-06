@@ -1,0 +1,22 @@
+{
+  "tools": [
+    {"name": "kafka_topic_describe.sh", "type": "read", "args": ["--all|<topic>"], "description": "List all topics or describe a topic."},
+    {"name": "kafka_consumer_group_describe.sh", "type": "read", "args": ["--all|<group>"], "description": "Describe consumer group lag and members."},
+    {"name": "kafka_broker_health.sh", "type": "read", "args": ["<broker_id>"], "description": "Summarize WARN/ERROR/FATAL counts from broker logs."},
+    {"name": "kafka_logs_tail.sh", "type": "read", "args": ["<broker_id>", "<lines>"], "description": "Tail broker logs."},
+    {"name": "kafka_config_read.sh", "type": "read", "args": ["broker|topic", "<name>"], "description": "Read effective configs."},
+    {"name": "kafka_metrics_snapshot.sh", "type": "read", "args": ["<broker_id>"], "description": "Basic JMX port check (POC)."},
+    {"name": "kafka_tls_status.sh", "type": "read", "args": ["--all|<broker_id>"], "description": "Show TLS cert expiry."},
+    {"name": "kafka_isr_check.sh", "type": "read", "args": [], "description": "Report partitions with ISR < replica count."},
+
+    {"name": "kafka_topic_create.sh", "type": "write", "args": ["<topic>", "<partitions>", "<replication_factor>"], "description": "Create a topic."},
+    {"name": "kafka_topic_delete.sh", "type": "write", "args": ["<topic>"], "description": "Delete a topic."},
+    {"name": "kafka_topic_alter_partitions.sh", "type": "write", "args": ["<topic>", "<new_partition_count>"], "description": "Increase partitions."},
+    {"name": "kafka_topic_alter_config.sh", "type": "write", "args": ["<topic>", "<key=value>..."], "description": "Alter topic config."},
+    {"name": "kafka_reassign_partitions.sh", "type": "write", "args": ["<reassign_json_path_in_container>"], "description": "Execute a reassignment plan."},
+    {"name": "kafka_preferred_leader_election.sh", "type": "write", "args": [], "description": "Trigger preferred leader election."},
+    {"name": "kafka_consumer_group_reset_offsets.sh", "type": "write", "args": ["<group>", "<topic>", "to-earliest|to-latest"], "description": "Reset consumer group offsets."},
+    {"name": "kafka_tls_rotate.sh", "type": "write", "args": [], "description": "TLS rotation (not implemented)."},
+    {"name": "kafka_health_dashboard.sh", "type": "read", "args": [], "description": "Combined health snapshot (ISR, broker health, TLS, topics)."}
+  ]
+}

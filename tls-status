@@ -1,0 +1,1 @@
+{"status":"ok","results":[{"broker":"kafka1","status":"ok","not_after":"Jan 28 15:10:08 2036 GMT"},{"broker":"kafka2","status":"ok","not_after":"Jan 28 15:10:09 2036 GMT"},{"broker":"kafka3","status":"ok","not_after":"Jan 28 15:10:10 2036 GMT"}]}

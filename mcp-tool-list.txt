@@ -1,0 +1,25 @@
+MCP Tool List (Kafka POC)
+
+Read-only tools (always allowed)
+- kafka_broker_health: broker up/down, controller, ISR status, URPs, offline partitions
+- kafka_topic_describe: partitions, replicas, ISR
+- kafka_consumer_group_describe: lag, members, assignment
+- kafka_logs_tail: filtered log lines by broker/time/severity
+- kafka_config_read: effective broker/topic configs
+- kafka_metrics_snapshot: latency/throughput/disk usage
+- kafka_tls_status: cert expiry, listener TLS status
+
+Write tools (gated by policy + approval)
+- kafka_topic_create
+- kafka_topic_delete
+- kafka_topic_alter_partitions
+- kafka_topic_alter_config
+- kafka_reassign_partitions
+- kafka_preferred_leader_election
+- kafka_consumer_group_reset_offsets
+- kafka_tls_rotate
+
+Manual-only (excluded from MCP)
+- ACL management
+- SASL/auth changes
+- User/group/role provisioning

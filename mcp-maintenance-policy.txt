@@ -1,0 +1,33 @@
+MCP Maintenance-Lock Policy (Kafka POC)
+
+Policy states
+- OPEN
+  - Read tools: allowed
+  - Write tools: allowed with human approval
+- MAINTENANCE
+  - Read tools: allowed
+  - Write tools: blocked by default
+  - Exceptions: explicitly whitelisted operations only
+
+Global safety gates (for every write)
+- Health check required
+  - Block if controller unstable or changed within last 5 minutes
+  - Block if any broker down
+  - Block if URPs > 0 (POC default)
+- Dry-run required
+  - Generate plan and show impact
+- Human approval required
+  - No auto-exec
+
+Approval roles (POC defaults)
+- Approver: kafka-admin
+- Observer: ops-readonly
+
+MAINTENANCE exceptions (must be explicitly set per window)
+- Allowed write tools (example): kafka_reassign_partitions, kafka_tls_rotate
+- Disallowed write tools (example): kafka_topic_delete, kafka_consumer_group_reset_offsets
+
+Examples
+- Block kafka_topic_delete during MAINTENANCE
+- Allow kafka_reassign_partitions only if maintenance window active and plan file exists
+- Allow kafka_tls_rotate only during MAINTENANCE with explicit approval
