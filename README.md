@@ -1,5 +1,44 @@
 # Kafka MCP POC (Docker)
 
+## User manual (quick guide)
+
+### Required software (pre-install)
+- Docker Desktop
+- Java 17+ (for keytool)
+- Python 3.10+
+- Git
+
+### Step-by-step deployment (from Git)
+1) Clone the repo:
+   ```sh
+   git clone https://github.com/arafiq81/kafka-mcp-docker
+   cd kafka-mcp-docker
+   ```
+2) Run the bootstrap script:
+   ```sh
+   ./kafka-poc-mcp-bootstrap.sh
+   ```
+3) Open the Web UI:
+   ```
+   http://127.0.0.1:8090
+   ```
+4) Confirm Kafka is up:
+   ```sh
+   docker ps
+   ```
+
+### Possible scenarios (POC)
+- **Topic operations**: create, delete, describe, alter partitions.
+- **Health checks**: ISR health, broker health, disk health.
+- **Log analysis**: tail logs by broker, filter errors/warnings.
+- **TLS checks**: validate certificate expiry.
+- **Approval flow**: write operations require approval.
+
+### Architecture overview (high level)
+```
+User -> Web UI -> LM Studio (LLM) -> MCP Gateway -> Kafka Tools -> Kafka Cluster
+```
+
 ## Quick start (single command)
 ```sh
 ./kafka-poc-mcp-bootstrap.sh
